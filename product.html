@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Products - BloomBiz</title>
+    <link rel="stylesheet" href="assets/style/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div id="cover-spin"></div>
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <img src="assets/Images/BloomBiz.png" width="120px">
+        </div>
+        <nav>
+            <ul id="MenuItems">
+                <li class="cursorType"><a class="menuItem-li" href="index.html">Home</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="product.html">Products</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="">About</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="">Contact</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="account.html">Account</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="cart.html"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                <li class="cursorType"><a id="logoutBtn"><i class="fa fa-sign-out logout-btn-icon"></i></a></li>
+            </ul>
+        </nav>
+        <img src="assets/Images/menu.PNG" class="menu-icon"
+             onclick="menutoggle()">
+    </div>
+</div>
+
+<div class="small-container">
+    <div class="row row-2">
+        <h2>All Products</h2>
+        <select id="selectSort">
+            <option value="default">Default Sorting</option>
+            <option value="priceAsc">Sort by Price Asc</option>
+            <option value="priceDesc">Sort by Price Desc</option>
+            <option value="ratingAsc">Sort by Rating Asc</option>
+            <option value="ratingDesc">Sort by Rating Desc</option>
+        </select>
+    </div>
+    <div class="row" id="productContainer">
+
+    </div>
+    <div class="page-btn">
+        <span id="btnPrevious">&#9668;</span>
+        <span id="btnNext">&#9658;</span>
+    </div>
+</div>
+
+<!----------------- footer ---------------->
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for both Android and iOS
+                    mobile phones</p>
+                <div class="app-logo">
+                    <img src="assets/images/playstore.png">
+                    <img src="assets/images/appstore.png">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img src="assets/Images/BloomBiz.png">
+                <p>Our purpose is to increase the plant growth and
+                    change the people into nature lovers.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Twitter</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2022 - Easy Tutorials</p>
+    </div>
+</div>
+
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="logoutFunction.js"></script>
+<!---------------- js for toggle menu ----------------->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle() {
+        if (MenuItems.style.maxHeight = "0px") {
+            MenuItems.style.maxHeight = "200px";
+        }
+        else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+</script>
+<script>
+
+    let page = 0;
+    let size = 8;
+    let sortBy = "default";
+    let sortDirection = "asc";
+    let isLastProducts = false;
+
+    appendProducts = (data) => {
+        for (let i = 0; i <= data.data.content.length; i++) {
+            let product = data.data.content[i];
+            let image = "data:image/gif;base64," + product.image;
+            let rating;
+
+            switch (product.rating) {
+                case 1:
+                    rating = "<i class=\"fa fa-star\"></i>\n";
+                    break;
+                case 2:
+                    rating = "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n";
+                    break;
+                case 3:
+                    rating = "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n";
+                    break;
+                case 4:
+                    rating = "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n";
+                    break;
+                case 5:
+                    rating = "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n" +
+                        "                <i class=\"fa fa-star\"></i>\n";
+                    break;
+            }
+
+            let card = "<div class=\"col-4 cursorType\" id=\"product" + sortBy + sortDirection + i + "\">\n" +
+                "            <img src=\"" + image + "\">\n" +
+                "            <h4>" + product.name + "</h4>\n" +
+                "            <div class=\"rating\">\n" +
+                rating +
+                "            </div>\n" +
+                "            <p>LKR " + product.price + "</p>\n" +
+                "        </div>";
+
+            let clickFunction = "#product" + sortBy + sortDirection + i;
+
+            $("#productContainer").append(card);
+
+            $(clickFunction).click(function () {
+                sessionStorage.setItem("productId", product.productId);
+                window.location.href = './product-details.html';
+            });
+        }
+    };
+
+    onClickNext = () => {
+        if (!isLastProducts) {
+            page = page + 1;
+        }
+    };
+
+    onClickPrevious = () => {
+        if (1 <= page) {
+            page = page - 1;
+        }
+    };
+
+    removeProducts = () => {
+        $("#productContainer").empty();
+    };
+
+    getAllProducts = () => {
+        return $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/api/v1/product/getAll",
+            contentType: 'application/json',
+            async: true,
+            processData: false,
+            data: JSON.stringify({
+                page: page,
+                size: size,
+                sortBy: sortBy,
+                sortDirection: sortDirection,
+            }),
+            success: function (data) {
+                console.log("Data", data);
+                appendProducts(data);
+            }
+        });
+    };
+
+    $(document).ready(function () {
+        $('#cover-spin').show(0);
+        getAllProducts().then(function(values) {
+            $('#cover-spin').hide();
+        });
+    });
+
+    $("#btnNext").click(function () {
+        if (!isLastProducts) {
+            $('#cover-spin').show(0);
+            removeProducts();
+            onClickNext();
+            $.ajax({
+                method: "POST",
+                url: "http://localhost:8080/api/v1/product/getAll",
+                contentType: 'application/json',
+                async: true,
+                processData: false,
+                data: JSON.stringify({
+                    page: page,
+                    size: size,
+                    sortBy: sortBy,
+                    sortDirection: sortDirection,
+                }),
+                success: function (data) {
+                    console.log("Data", data);
+                    if (data.data.content.length < 8) {
+                        isLastProducts = true;
+                    } else if (data.data.content.length === 0) {
+                        isLastProducts = true;
+                        if (1 <= page) {
+                            page = page - 1;
+                        }
+                    }
+                    appendProducts(data);
+                }
+            }).then(function(values) {
+                $('#cover-spin').hide();
+            });
+        }
+    });
+
+    $("#btnPrevious").click(function () {
+        if (1 <= page) {
+            $('#cover-spin').show(0);
+            isLastProducts = false;
+            removeProducts();
+            onClickPrevious();
+            $.ajax({
+                method: "POST",
+                url: "http://localhost:8080/api/v1/product/getAll",
+                contentType: 'application/json',
+                async: true,
+                processData: false,
+                data: JSON.stringify({
+                    page: page,
+                    size: size,
+                    sortBy: sortBy,
+                    sortDirection: sortDirection,
+                }),
+                success: function (data) {
+                    console.log("Data", data);
+                    if (data.data.content.length < 8) {
+                        isLastProducts = true;
+                    }
+                    appendProducts(data);
+                }
+            }).then(function(values) {
+                $('#cover-spin').hide();
+            });
+        }
+    });
+
+    $('#selectSort').on('change', function () {
+        $('#cover-spin').show(0);
+        page = 0;
+        isLastProducts = false;
+        switch (this.value) {
+            case 'default':
+                sortBy = "default";
+                sortDirection = "asc";
+                break;
+            case 'priceAsc':
+                sortBy = "price";
+                sortDirection = "asc";
+                break;
+            case 'priceDesc':
+                sortBy = "price";
+                sortDirection = "desc";
+                break;
+            case 'ratingAsc':
+                sortBy = "rating";
+                sortDirection = "asc";
+                break;
+            case 'ratingDesc':
+                sortBy = "rating";
+                sortDirection = "desc";
+                break;
+        }
+        removeProducts();
+        getAllProducts().then(function(values) {
+            $('#cover-spin').hide();
+        });
+    });
+
+</script>
+</body>
+</html>

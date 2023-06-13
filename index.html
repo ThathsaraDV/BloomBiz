@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloomBiz | Ecommerce Website Design</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/style/normalize.css">
+    <link rel="stylesheet" href="assets/style/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div id="cover-spin"></div>
+<div class="header">
+    <div class="container">
+        <div class="navbar">
+            <div class="logo">
+                <img src="assets/Images/BloomBiz.png" width="120px">
+            </div>
+            <nav>
+                <ul id="MenuItems">
+                    <li class="cursorType"><a class="menuItem-li" href="index.html">Home</a></li>
+                    <li class="cursorType"><a class="menuItem-li" href="product.html">Products</a></li>
+                    <li class="cursorType"><a class="menuItem-li" href="">About</a></li>
+                    <li class="cursorType"><a class="menuItem-li" href="">Contact</a></li>
+                    <li class="cursorType"><a class="menuItem-li" href="account.html">Account</a></li>
+                    <li class="cursorType"><a class="menuItem-li" href="cart.html"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                    <li class="cursorType"><a id="logoutBtn"><i class="fa fa-sign-out logout-btn-icon"></i></a></li>
+                </ul>
+            </nav>
+
+            <img src="assets/Images/menu.PNG" class="menu-icon"
+                 onclick="menutoggle()">
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <h1>Love the Nature<br>and Be Loved!</h1>
+                <p>Live your life in a green world. Start planting,<br>
+                    make the world a better place.</p>
+                <a href="" class="btn">Explore Now &#10174;</a>
+            </div>
+            <div class="col-2">
+                <img src="assets/images/cover 1.PNG">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-------- featured categories -------->
+<div class="categories">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <img src="assets/images/Featured1.JPEG">
+            </div>
+            <div class="col-3">
+                <img src="assets/images/Featured2.JPEG">
+            </div>
+            <div class="col-3">
+                <img src="assets/images/Featured3.JPEG">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-------- featured products -------->
+<div class="small-container">
+    <h2 class="title">Featured Products</h2>
+    <div class="row" id="featuredProductsRow"></div>
+    <h2 class="title">Latest Products</h2>
+    <div class="row" id="latestProductsRow"></div>
+</div>
+
+
+<!----------- offer ------------>
+<div class="offer">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-2">
+                <img src="assets/images/Offer 1.jpg" class="offer-img">
+            </div>
+            <div class="col-2">
+                <p>Exclusively Available on BloomBiz</p>
+                <h1>Decorated Cactus</h1>
+                <small>Cactus planted, decorated pots including customer
+                    customizations for special ocassions to save your time and your loved one's heart.
+                </small>
+                <div class="col-3">
+                    <a href="" class="btn">Buy Now &#10174;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--------------- testimonial --------------->
+<div class="testimonial">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Include the relevent content at the end of
+                    this website creation
+                </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <img src="assets/Images/Eragon dp.jpg">
+                <h3>Nipun Isuru</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Include the relevent content at the end of
+                    this website creation
+                </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <img src="assets/Images/Sewwa.jpg">
+                <h3>Kumudu Sewwandi</h3>
+            </div>
+            <div class="col-3">
+                <i class="fa fa-quote-left"></i>
+                <p>Include the relevent content at the end of
+                    this website creation
+                </p>
+                <div class="rating">
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <img src="assets/Images/Chanu.jpg">
+                <h3>Chanura Kushan</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!------------------ brands ------------------->
+<div class="brands">
+    <div class="small-container">
+        <div class="row">
+            <div class="col-5">
+                <img src="assets/Images/logo-isiwara.jpg">
+            </div>
+            <div class="col-5">
+                <img src="assets/Images/logo-sltc.webp">
+            </div>
+            <div class="col-5">
+                <img src="assets/Images/logo-prompt.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!----------------- footer ---------------->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for both Android and iOS
+                    mobile phones</p>
+                <div class="app-logo">
+                    <img src="assets/images/playstore.png">
+                    <img src="assets/images/appstore.png">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img src="assets/Images/BloomBiz.png">
+                <p>Our purpose is to increase the plant growth and
+                    change the people into nature lovers.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Twitter</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2022 - Easy Tutorials</p>
+    </div>
+</div>
+
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="logoutFunction.js"></script>
+
+<!---------------- js for toggle menu ----------------->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle() {
+        if (MenuItems.style.maxHeight = "0px") {
+            MenuItems.style.maxHeight = "200px";
+        } else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+
+</script>
+
+<script>
+    $(function () {
+        $('#cover-spin').show(0);
+        Promise.all([ getFeatured(), getLatest() ]).then(function(values) {
+            $('#cover-spin').hide();
+        })
+    });
+
+    function getFeatured() {
+        return $.ajax({
+            method: "GET",
+            url: "http://localhost:8080/api/v1/product/get-featured",
+            contentType: 'application/json',
+            async: true,
+            processData: false,
+
+            success: function (data) {
+                // console.log("Data", data);
+
+                for (let i = 0; i <= data.data.length; i++) {
+                    let product = data.data[i];
+                    let image = "data:image/gif;base64," + product.image;
+                    let rating;
+
+                    switch (product.rating) {
+                        case 1:
+                            rating = "<i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 2:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 3:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 4:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 5:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                    }
+
+                    let card = "<div class=\"col-4 cursorType\">\n" +
+                        "            <img src=\"" + image + "\">\n" +
+                        "            <h4>" + product.name + "</h4>\n" +
+                        "            <div class=\"rating\">\n" +
+                        rating +
+                        "            </div>\n" +
+                        "            <p>LKR " + product.price + "</p>\n" +
+                        "        </div>";
+
+                    $("#featuredProductsRow").append(card);
+                }
+            }
+        });
+    }
+
+    function getLatest() {
+        return $.ajax({
+            method: "GET",
+            url: "http://localhost:8080/api/v1/product/get-latest",
+            contentType: 'application/json',
+            async: true,
+            processData: false,
+
+            success: function (data) {
+                for (let i = 0; i <= data.data.length; i++) {
+                    let product = data.data[i];
+                    let image = "data:image/gif;base64," + product.image;
+                    let rating;
+
+                    switch (product.rating) {
+                        case 1:
+                            rating = "<i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 2:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 3:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 4:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                        case 5:
+                            rating = "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n" +
+                                "                <i class=\"fa fa-star\"></i>\n";
+                            break;
+                    }
+
+
+                    let card = "<div class=\"col-4 cursorType\">\n" +
+                        "            <img src=\"" + image + "\">\n" +
+                        "            <h4>" + product.name + "</h4>\n" +
+                        "            <div class=\"rating\">\n" +
+                        rating +
+                        "            </div>\n" +
+                        "            <p>LKR " + product.price + "</p>\n" +
+                        "        </div>";
+
+                    $("#latestProductsRow").append(card);
+                }
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
+ 

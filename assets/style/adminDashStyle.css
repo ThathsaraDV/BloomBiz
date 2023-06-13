@@ -1,0 +1,91 @@
+.adminDashHeader {
+    /*background: radial-gradient(#fff,#43E69C);*/
+}
+
+.rating .fa{
+    color: #13C778;
+}
+
+/*--------------------------- Loader -----------------------------*/
+
+#cover-spin {
+    position:fixed;
+    width:100%;
+    left:0;right:0;top:0;bottom:0;
+    background-color: rgba(255,255,255,0.7);
+    z-index:9999;
+    display:none;
+}
+
+@-webkit-keyframes spin {
+    from {-webkit-transform:rotate(0deg);}
+    to {-webkit-transform:rotate(360deg);}
+}
+
+@keyframes spin {
+    from {transform:rotate(0deg);}
+    to {transform:rotate(360deg);}
+}
+
+#cover-spin::after {
+    content:'';
+    display:block;
+    position:absolute;
+    left:48%;top:40%;
+    width:40px;height:40px;
+    border-style:solid;
+    border-color:#13C778;
+    border-top-color:transparent;
+    border-width: 5px;
+    border-radius:50%;
+    -webkit-animation: spin .8s linear infinite;
+    animation: spin .8s linear infinite;
+}
+
+.error {
+    display: block;
+}
+
+.cursorType {
+    cursor: pointer;
+}
+
+.active {
+    color: #FFF !important;
+}
+
+.navBar-shadow {
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.remove-padding {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #7DCE13 !important;
+}
+
+.nav-tabs .nav-link {
+    border: none !important;
+    border-top-left-radius: 0.4rem !important;
+    border-top-right-radius: 0.4rem !important;
+}
+
+.logout-btn-icon{
+    font-size: 36px !important;
+    cursor: pointer;
+}
+
+.logout-btn-icon:hover{
+    color: #d6205a;
+    /*font-size:24px !important;*/
+}
+
+.adminCard {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border-radius: 0.25rem !important;
+}
+
+.bootbox.modal {z-index: 9999 !important;}

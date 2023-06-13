@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dash</title>
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=2 minimum-scale=1">
+    <link rel="stylesheet" href="assets/style/normalize.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/style/adminDashStyle.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/raty/jquery.raty.css">
+
+</head>
+<body style="background-color: #F1F6F9">
+<div id="cover-spin"></div>
+<section class="container row adminDashHeader" style="float: none; margin: 0 auto;" id="navHeader">
+    <div class="row align-items-center">
+        <div class="logo col-2">
+            <img src="assets/Images/BloomBiz.png" width="120px" alt="Brand Logo">
+        </div>
+        <div class="logo  col-8 mt-2 navBar-shadow remove-padding">
+            <ul class="nav nav-tabs nav-fill navbar-light" style="background-color: #E3DFFD">
+                <li class="nav-item cursorType">
+                    <a class="nav-link active fs-5 fw-bold" id="linkAddProduct">Add Product</a>
+                </li>
+                <li class="nav-item cursorType">
+                    <a class="nav-link fs-5 fw-bold" id="linkUpdateQty">Update Quantity</a>
+                </li>
+                <li class="nav-item cursorType">
+                    <a class="nav-link fs-5 fw-bold" id="linkAddStore">Add Store</a>
+                </li>
+            </ul>
+        </div>
+        <div class="logo col-2">
+            <div class="w-100 d-flex align-items-center justify-content-end">
+                <a id="adminLogoutBtn"><i class="fa fa-sign-out logout-btn-icon"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container position-relative pt-5" style="float: none; margin: 0 auto;" id="addProductContent">
+    <div class="col-md-9 userLoginCard" style="float: none; margin: 0 auto;">
+        <div class="row adminCard">
+            <form class="row gy-4 gx-lg-5 w-100 mt-3" style="float: none; margin: 0 auto;" id="formAddProduct">
+                <div class="col-md-6">
+                    <label for="regProductName" class="form-label">Name</label>
+                    <input type="text" class="form-control rounded-pill" id="regProductName">
+                    <div class="invalid-feedback" id="nameError">
+                        *Name must be 4 characters minimum.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="regProductDesc" class="form-label">Description</label>
+                    <textarea class="form-control" rows="1" id="regProductDesc"></textarea>
+                    <div class="invalid-feedback" id="descError">
+                        *Description must be 4 characters minimum.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="regProductPrice" class="form-label">Price</label>
+                    <input type="number" step="0.01" min="0" class="form-control rounded-pill" id="regProductPrice">
+                    <div class="invalid-feedback" id="priceError">
+                        *Price cannot be empty or 0.
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="regProductQty" class="form-label">Quantity</label>
+                    <input type="number" min="0" step="1" class="form-control rounded-pill" id="regProductQty">
+                    <div class="invalid-feedback" id="qtyError">
+                        *Quantity cannot be empty.
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label" for="regProductStore">Store</label>
+                    <select class="form-select rounded-pill" id="regProductStore" >
+                        <option value="" selected disabled>Please select</option>
+                    </select>
+                    <div class="invalid-feedback" id="storeError">
+                        *Please select a store.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="regProductImg" class="form-label">Upload Image</label>
+                    <input type="file" class="form-control rounded-pill" id="regProductImg">
+                    <div class="invalid-feedback" id="imageError">
+                        *Please select an image.
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex align-items-end">
+                    <div id="productRating" data-score="0"></div>
+                </div>
+                <div class="col-md-12 mb-lg-5">
+                    <div class="w-25 mt-5" style="float: none; margin: 0 auto;">
+                        <button type="button" class="btn btn-primary w-100 rounded-pill" id="btnProductSave">Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="container row" style="float: none; margin: 0 auto;" id="updateQtyContent">
+    <div class="col-md-10 adminCard mt-4" style="float: none; margin: 0 auto;">
+        <div class="row table-responsive" style="height: 300px; padding: 10px;">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Store</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody id="updateTBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-9 userLoginCard" style="float: none; margin: 0 auto;">
+        <div class="row mt-lg-5">
+            <form class="row g-3 w-75" style="float: none; margin: 0 auto;">
+                <div class="col-md-4">
+                    <label for="productName" class="form-label">Name</label>
+                    <input type="text" class="form-control rounded-pill" disabled id="productName">
+                    <div class="invalid-feedback" id="productNameError">
+                        *Please select a product
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="productNewQuantity" class="form-label">New Qty</label>
+                    <input type="number" min="0" step="1" class="form-control rounded-pill" id="productNewQuantity">
+                    <div class="invalid-feedback" id="newQtyError">
+                        *Quantity must be 0 or more
+                    </div>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <div class="w-75" style="float: none; margin: 0 auto;">
+                        <button type="button" class="btn btn-primary w-100 rounded-pill" id="btnUpdateQty">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="container row" style="float: none; margin: 0 auto;" id="addStoreContent">
+    <div class="col-md-8 adminCard mt-4" style="float: none; margin: 0 auto;">
+        <div class="row table-responsive" style="height: 300px; padding: 10px;">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                </tr>
+                </thead>
+                <tbody id="storeTBody"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-9 userLoginCard mt-3" style="float: none; margin: 0 auto;">
+        <div class="row">
+            <form class="row g-3 w-75" style="float: none; margin: 0 auto;">
+                <div class="col-md-6">
+                    <label for="regStoreName" class="form-label">Name</label>
+                    <input type="text" class="form-control rounded-pill" id="regStoreName">
+                    <div class="invalid-feedback" id="storeNameError">
+                        *Name must be 4 characters minimum.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="regStoreAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control rounded-pill" id="regStoreAddress">
+                    <div class="invalid-feedback" id="storeAddError">
+                        *Address must be 4 characters minimum.
+                    </div>
+                </div>
+                <div class="col-md-12 mb-lg-5">
+                    <div class="w-25 mt-4" style="float: none; margin: 0 auto;">
+                        <button type="button" class="btn btn-primary w-100 rounded-pill" id="btnStoreSave">Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/bootbox/bootbox.all.min.js"></script>
+<script src="assets/raty/jquery.raty.js"></script>
+<script src="logoutFunction.js"></script>
+<script>
+    $("#addProductContent").css("display", "block");
+    $("#updateQtyContent,#addStoreContent").css("display", "none");
+
+    $("#linkAddProduct").click(function () {
+
+        $("#updateQtyContent,#addStoreContent").css("display", "none");
+        $("#addProductContent").css("display", "block");
+
+    });
+
+    $("#linkUpdateQty").click(function () {
+
+        $("#addProductContent,#addStoreContent").css("display", "none");
+        $("#updateQtyContent").css("display", "block");
+
+    });
+
+    $("#linkAddStore").click(function () {
+
+        $("#addProductContent,#updateQtyContent").css("display", "none");
+        $("#addStoreContent").css("display", "block");
+
+    });
+
+    $('ul.nav-tabs li>a').click(function (e) {
+        let $this = $(this);
+        $('ul.nav-tabs>li').find('a.active').last().removeClass('active');
+        $this.addClass('active');
+    });
+
+</script>
+<script>
+    let ratyRating;
+
+    $(function () {
+        $('#cover-spin').show(0);
+        ratyRating = $('#productRating').raty({ starType: 'i', number: 5, numberMax: 20 });
+        Promise.all([ getStores(), getProducts() ]).then(function(values) {
+            $('#cover-spin').hide();
+        })
+    });
+
+    function getStores() {
+        return $.ajax({
+            method: "GET",
+            url: "http://localhost:8080/api/v1/store/getAll",
+            contentType: 'application/json',
+            async: true,
+            processData: false,
+
+            success: function (data) {
+                let storeList = data.data;
+                console.log("Stores", data);
+                setStoresToSelect(storeList);
+                setStoresToTable(storeList);
+            }
+        });
+    }
+
+    function setStoresToSelect(storeList) {
+        storeList.forEach((store) => {
+            let storeOption = "<option value=\""+store.storeId+"\">"+store.storeName+"</option>";
+            $("#regProductStore").append(storeOption);
+        })
+    }
+
+    function setStoresToTable(storeList) {
+        $("#storeTBody").empty();
+        let count = 1;
+        storeList.forEach((store) => {
+            let row = "<tr>\n" +
+                "                <th scope=\"row\">" + count + "</th>\n" +
+                "            <td>" + store.storeName + "</td>\n" +
+                "            <td>" + store.address + "</td>\n" +
+                "        </tr>";
+
+            $("#storeTBody").append(row);
+            count++;
+        })
+    }
+
+    function getProducts() {
+        return $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/api/v1/product/all",
+            contentType: 'application/json',
+            async: true,
+            processData: false,
+            success: function (data) {
+                console.log("Data", data);
+                appendProducts(data.data);
+            }
+        });
+    }
+
+    const appendProducts = (productList) => {
+        $("#updateTBody").empty();
+        console.log("ProductList", productList);
+        for (let i = 0; i < productList.length; i++) {
+            let product = productList[i];
+
+            let row = "<tr>\n" +
+                "                <th scope=\"row\">" + (i+1) + "</th>\n" +
+                "            <td>" + product.name + "</td>\n" +
+                "            <td>LKR " + product.price + "</td>\n" +
+                "            <td>" + product.storeName + "</td>\n" +
+                "            <td>" + product.quantity + "</td>\n" +
+                "            <td class=\"text-center\">\n" +
+                "                <button type=\"button\" id=\"row" + i + "\" class=\"btn btn-light w-50 rounded-pill\">\n" +
+                "                    <span class=\"fa fa-pencil\" aria-hidden=\"true\"></span>\n" +
+                "                </button>\n" +
+                "            </td>\n" +
+                "        </tr>";
+
+            let buttonID = "#row" + i;
+
+            $("#updateTBody").append(row);
+
+            $(buttonID).click(function () {
+                sessionStorage.setItem("adminProductId", product.productId);
+                $('#productName').val(product.name);
+                $('#productNewQuantity').val(product.quantity);
+            });
+        }
+        $('#cover-spin').hide();
+    };
+
+    $("#btnProductSave").click(function () {
+
+        let productName = $("#regProductName").val();
+        let productDesc = $("#regProductDesc").val();
+        let productPrice = $("#regProductPrice").val();
+        let productQty = $("#regProductQty").val();
+        let productStore = $("#regProductStore").val();
+        let productImg = $("#regProductImg")[0].files[0];
+        let productRating = $('#productRating').find( 'input[name="score"]' ).val();
+
+        if (productName.trim().length > 4) {
+            $("#nameError").removeClass('error');
+
+            if (productDesc.trim().length > 4) {
+                $("#descError").removeClass('error');
+
+                if (productPrice.trim().length > 0 && productPrice !== 0) {
+                    $("#priceError").removeClass('error');
+
+                    if (productQty.trim().length > 0) {
+                        $("#qtyError").removeClass('error');
+
+                        if (productStore != null) {
+                            $("#storeError").removeClass('error');
+
+                            if (productImg !== undefined) {
+                                $("#imageError").removeClass('error');
+
+                                $('#cover-spin').show(0);
+                                productPrice = parseFloat(productPrice).toFixed(2);
+                                productQty = parseInt(productQty);
+                                productStore = parseInt(productStore);
+                                if (productRating.length === 0) {
+                                    productRating = 0;
+                                } else {
+                                    productRating = parseInt(productRating);
+                                }
+
+                                let formData = new FormData();
+                                formData.append("image", productImg);
+                                formData.append("productDto", JSON.stringify({
+                                    "productId": null,
+                                    "name": productName,
+                                    "description": productDesc,
+                                    "price": productPrice,
+                                    "quantity": productQty,
+                                    "image": null,
+                                    "rating": productRating,
+                                    "storeId": productStore
+                                }));
+                                let adminToken = sessionStorage.getItem("adminToken");
+                                console.log("adminToken", productRating)
+                                bootbox.confirm({
+                                    title: 'Save Product',
+                                    message: 'Do you want to save this product ?',
+                                    buttons: {
+                                        confirm: {
+                                            label: 'Yes',
+                                            className: 'btn-success'
+                                        },
+                                        cancel: {
+                                            label: 'No',
+                                            className: 'btn-danger'
+                                        }
+                                    },
+                                    callback: function (result) {
+                                        if (result) {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: 'http://localhost:8080/api/v1/product/save',
+                                                headers: {
+                                                    'Authorization': adminToken,
+                                                },
+                                                async: false,
+                                                processData: false,
+                                                contentType: false,
+                                                data: formData,
+                                                success: function (data) {
+                                                    console.log("Success ",data)
+                                                    if (data.code === '200') {
+                                                        $('#formAddProduct').trigger("reset");
+                                                        $('#productRating').empty();
+                                                        ratyRating = $('#productRating').raty({ starType: 'i', number: 5, numberMax: 20 });
+                                                        $('#cover-spin').hide();
+                                                        getProducts();
+                                                        bootbox.dialog({
+                                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0f5132" class="bi bi-check-circle-fill" viewBox="0 0 16 16">\n' +
+                                                                '    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>\n' +
+                                                                '  </svg>    Saved Successfully</p>',
+                                                            closeButton: false,
+                                                            backdrop: true
+                                                        });
+                                                    } else if (data.code === '500') {
+                                                        $('#cover-spin').hide();
+                                                        bootbox.dialog({
+                                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                                '  </svg>   System Error!</p>',
+                                                            closeButton: false,
+                                                            backdrop: true
+                                                        });
+                                                    } else {
+                                                        $('#cover-spin').hide();
+                                                        bootbox.dialog({
+                                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                                '  </svg>   Internal Server Error!</p>',
+                                                            closeButton: false,
+                                                            backdrop: true
+                                                        });
+                                                    }
+                                                },
+                                                error: function (data) {
+                                                    $('#cover-spin').hide();
+                                                    if (data.status === 500) {
+                                                        bootbox.dialog({
+                                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                                '  </svg>   Unauthorized or Bad Request!</p>',
+                                                            closeButton: false,
+                                                            backdrop: true
+                                                        });
+                                                    } else {
+                                                        bootbox.dialog({
+                                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                                '  </svg>   Internal Server Error!</p>',
+                                                            closeButton: false,
+                                                            backdrop: true
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    },
+                                });
+
+                                $('#cover-spin').hide();
+                            } else {
+                                $("#imageError").addClass('error');
+                            }
+                        } else {
+                            $("#storeError").addClass('error');
+                        }
+                    } else {
+                        $("#qtyError").addClass('error');
+                    }
+                } else {
+                    $("#priceError").addClass('error');
+                }
+            } else {
+                $("#descError").addClass('error');
+            }
+        } else {
+            $("#nameError").addClass('error');
+        }
+
+    });
+
+    $("#btnUpdateQty").click(function () {
+        const productId = sessionStorage.getItem("adminProductId");
+        let productQty = $("#productNewQuantity").val();
+
+        console.log("Desc ", productQty, productId)
+
+        if (productId !== "N/A") {
+            $("#productNameError").removeClass('error');
+
+            if (productQty.trim().length > 0) {
+                $("#newQtyError").removeClass('error');
+
+                $('#cover-spin').show(0);
+                const adminToken = sessionStorage.getItem("adminToken");
+
+                bootbox.confirm({
+                    title: 'Update Quantity',
+                    message: 'Do you want to update quantity for this product ?',
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                method: "PUT",
+                                url: "http://localhost:8080/api/v1/product/update?quantity=" + productQty + "&productId=" + productId,
+                                headers: {
+                                    'Authorization': adminToken,
+                                },
+                                async: true,
+                                processData: false,
+                                contentType: 'application/json',
+                                success: function (data) {
+                                    console.log("Success ",data)
+                                    if (data.code === '200') {
+                                        sessionStorage.setItem("adminProductId", "N/A");
+                                        $('#productName').val('');
+                                        $('#productNewQuantity').val('');
+                                        getProducts();
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0f5132" class="bi bi-check-circle-fill" viewBox="0 0 16 16">\n' +
+                                                '    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>\n' +
+                                                '  </svg>    Saved Successfully</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else if (data.code === '500') {
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   System Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else {
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Internal Server Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    }
+                                    $('#cover-spin').hide();
+                                },
+                                error: function (data) {
+                                    $('#cover-spin').hide();
+                                    if (data.status === 500) {
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Unauthorized or Bad Request!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else {
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Internal Server Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    },
+                });
+            } else {
+                $("#newQtyError").addClass('error');
+            }
+        } else {
+            $("#productNameError").addClass('error');
+        }
+
+    });
+
+    $("#btnStoreSave").click(function () {
+        const storeName = $('#regStoreName').val();
+        const storeAddress = $("#regStoreAddress").val();
+
+        if (storeName.trim().length > 4) {
+            $("#storeNameError").removeClass('error');
+
+            if (storeAddress.trim().length > 4) {
+                $("#storeAddError").removeClass('error');
+
+                $('#cover-spin').show(0);
+                const adminToken = sessionStorage.getItem("adminToken");
+
+                bootbox.confirm({
+                    title: 'Save Store',
+                    message: 'Do you want to save this store ?',
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'No',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function (result) {
+                        if (result) {
+                            $.ajax({
+                                method: "POST",
+                                url: "http://localhost:8080/api/v1/store/save",
+                                headers: {
+                                    'Authorization': adminToken,
+                                },
+                                async: true,
+                                processData: false,
+                                contentType: 'application/json',
+                                data: JSON.stringify({
+                                    "storeId": null,
+                                    "storeName": storeName,
+                                    "address": storeAddress
+                                }),
+                                success: function (data) {
+                                    console.log("Success ",data)
+                                    if (data.code === '200') {
+                                        $('#regStoreName').val('');
+                                        $('#regStoreAddress').val('');
+                                        $('#cover-spin').hide();
+                                        getStores();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0f5132" class="bi bi-check-circle-fill" viewBox="0 0 16 16">\n' +
+                                                '    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>\n' +
+                                                '  </svg>    Saved Successfully</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else if (data.code === '500') {
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   System Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else {
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Internal Server Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    }
+                                    $('#cover-spin').hide();
+                                },
+                                error: function (data) {
+                                    $('#cover-spin').hide();
+                                    if (data.status === 500) {
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Unauthorized or Bad Request!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else {
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Internal Server Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    },
+                });
+            } else {
+                $("#storeAddError").addClass('error');
+            }
+        } else {
+            $("#storeNameError").addClass('error');
+        }
+
+    });
+
+</script>
+</body>
+</html>

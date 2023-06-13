@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=2 minimum-scale=1">
+    <link rel="stylesheet" href="assets/style/normalize.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/style/registrationStyle.css">
+</head>
+<body>
+<div id="cover-spin"></div>
+<section class="container position-relative pt-3">
+    <div class="col-md-9 userLoginCard" style="float: none; margin: 0 auto;">
+        <div class="row mt-5">
+            <div class="logo w-auto" style="float: none; margin: 0 auto;">
+                <img src="assets/Images/BloomBiz.png" width="150px">
+            </div>
+        </div>
+        <div class="row">
+            <form class="row g-3 w-75" style="float: none; margin: 0 auto;">
+                <div class="col-md-6">
+                    <label for="regUserFirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control rounded-pill" id="regUserFirstName">
+                    <div class="invalid-feedback" id="firstNameError">
+                        Please enter a First Name.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="regUserLastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control rounded-pill" id="regUserLastName">
+                    <div class="invalid-feedback" id="lastNameError">
+                        Please enter a Last Name.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="regUserEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control rounded-pill" id="regUserEmail">
+                    <div class="invalid-feedback" id="emailError">
+                        Please enter a valid Email.
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="regUserPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control rounded-pill" id="regUserPassword">
+                    <div class="invalid-feedback" id="passwordError">
+                        Minimum 8 characters, at least one letter and one number.
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="regUserConfirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control rounded-pill" id="regUserConfirmPassword">
+                    <div class="invalid-feedback" id="conPasswordError">
+                        Password doesn't match.
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="regUserAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control rounded-pill" id="regUserAddress" placeholder="1234 Main St">
+                    <div class="invalid-feedback" id="addressError">
+                        Please enter an Address.
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="regUserContact" class="form-label">Contact</label>
+                    <input type="tel" class="form-control rounded-pill" id="regUserContact">
+                    <div class="invalid-feedback" id="contactError">
+                        Please enter a valid Contact No.
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="regUserUsername" class="form-label">Username</label>
+                    <input type="text" class="form-control rounded-pill" id="regUserUsername">
+                    <div class="invalid-feedback" id="usernameError">
+                        Please enter a Username with minimum 4 characters.
+                    </div>
+                </div>
+                <div class="col-md-12 mb-lg-5">
+                    <div class="w-25" style="float: none; margin: 0 auto;">
+                        <button type="button" class="btn btn-primary w-100 rounded-pill" id="btnUserReg">Sign up
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/bootbox/bootbox.all.min.js"></script>
+<script>
+
+    $("#btnUserReg").click(function () {
+
+        let firstName = $("#regUserFirstName").val();
+        let lastName = $("#regUserLastName").val();
+        let userName = $("#regUserUsername").val().trim();
+        let userAddress = $("#regUserAddress").val();
+        let userContact = $("#regUserContact").val();
+        let userEmail = $("#regUserEmail").val();
+        let userPassword = $("#regUserPassword").val().trim();
+        let userConPassword = $("#regUserConfirmPassword").val().trim();
+
+        if (/^[A-Z][a-z]{3,}$/.test(firstName)) {
+            $("#firstNameError").removeClass('error');
+
+            if (/^[A-Z][a-z]{3,}$/.test(lastName)) {
+                $("#lastNameError").removeClass('error');
+
+                if (/^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]/.test(userEmail)) {
+                    $("#emailError").removeClass('error');
+
+                    if (/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(userPassword)) {
+                        $("#passwordError").removeClass('error');
+
+                        if (userPassword === userConPassword) {
+                            $("#conPasswordError").removeClass('error');
+
+                            if (userAddress.length > 4) {
+                                $("#addressError").removeClass('error');
+
+                                if (/^[0][7][0-9]{8}$/.test(userContact)) {
+                                    $("#contactError").removeClass('error');
+
+                                    if (userName.length > 4) {
+                                        $("#usernameError").removeClass('error');
+                                        console.log("Can be Submitted");
+
+                                        $.ajax({
+                                            method: "POST",
+                                            url: "http://localhost:8080/api/v1/customer/save",
+                                            contentType: 'application/json',
+                                            async: true,
+                                            processData: false,
+                                            data: JSON.stringify({
+                                                firstName: firstName,
+                                                lastName: lastName,
+                                                address: userAddress,
+                                                emailAddress: userEmail,
+                                                contactNo: userContact,
+                                                userName: userName,
+                                                password: userPassword
+                                            }),
+                                            success: function (data) {
+                                                if (data.code === '200') {
+                                                    window.location.replace("./userLogin.html");
+                                                } else {
+                                                    bootbox.dialog({
+                                                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                            '  </svg>   Internal Server Error!</p>',
+                                                        closeButton: false,
+                                                        backdrop: true
+                                                    });
+                                                }
+                                            },
+                                            error: function (data) {
+                                                $('#cover-spin').hide();
+                                                if (data.status === 500) {
+                                                    bootbox.dialog({
+                                                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                            '  </svg>   Unauthorized or Bad Request!</p>',
+                                                        closeButton: false,
+                                                        backdrop: true
+                                                    });
+                                                } else {
+                                                    bootbox.dialog({
+                                                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                            '  </svg>   Internal Server Error!</p>',
+                                                        closeButton: false,
+                                                        backdrop: true
+                                                    });
+                                                }
+                                            }
+                                        });
+
+                                    } else {
+                                        $("#usernameError").addClass('error');
+                                    }
+                                } else {
+                                    $("#contactError").addClass('error');
+                                }
+                            } else {
+                                $("#addressError").addClass('error');
+                            }
+                        } else {
+                            $("#conPasswordError").addClass('error');
+                        }
+                    } else {
+                        $("#passwordError").addClass('error');
+                    }
+                } else {
+                    $("#emailError").addClass('error');
+                }
+            } else {
+                $("#lastNameError").addClass('error');
+            }
+        } else {
+            $("#firstNameError").addClass('error');
+        }
+
+    });
+
+</script>
+</body>
+</html>

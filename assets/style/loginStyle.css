@@ -1,0 +1,15 @@
+.app-logo{
+    margin-top: 20px;
+}
+.app-logo img{
+    width: 180px;
+}
+
+.userLoginCard {
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 grey;
+}
+
+body {
+    background: radial-gradient(#fff,#43E69C);
+}

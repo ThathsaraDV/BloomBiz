@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page - BloomBiz</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/style/normalize.css">
+    <link rel="stylesheet" href="assets/style/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div id="cover-spin"></div>
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <img src="assets/images/BloomBiz.png" width="120px">
+        </div>
+        <nav>
+            <ul id="MenuItems">
+                <li class="cursorType"><a class="menuItem-li" href="index.html">Home</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="product.html">Products</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="">About</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="">Contact</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="account.html">Account</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="cart.html"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                <li class="cursorType"><a id="logoutBtn"><i class="fa fa-sign-out logout-btn-icon"></i></a></li>
+            </ul>
+        </nav>
+        <img src="assets/Images/menu.PNG" class="menu-icon"
+             onclick="menutoggle()">
+    </div>
+</div>
+<!----------------- cart item details ----------------->
+
+<div class="smal-container cart-page">
+    <table id="cartTable">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="total-price">
+        <table>
+            <tr>
+                <td>Subtotal</td>
+                <td id="totalPrice">LKR 00.00</td>
+            </tr>
+            <tr>
+                <td>Tax</td>
+                <td id="taxPrice">LKR 00.00</td>
+            </tr>
+            <tr>
+                <td>Total</td>
+                <td id="netPrice">LKR 00.00</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-12 d-flex justify-content-end">
+        <div class="w-25">
+            <button type="button" class="btn btn-primary w-50 rounded-pill" id="btnCheckout">Checkout</button>
+        </div>
+    </div>
+</div>
+<!----------------- footer ---------------->
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for both Android and iOS
+                    mobile phones</p>
+                <div class="app-logo">
+                    <img src="assets/images/playstore.png">
+                    <img src="assets/images/appstore.png">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img src="assets/Images/BloomBiz.png">
+                <p>Our purpose is to increase the plant growth and
+                    change the people into nature lovers.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Twitter</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2022 - Easy Tutorials</p>
+    </div>
+</div>
+<!---------------- js for toggle menu ----------------->
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle() {
+        if (MenuItems.style.maxHeight = "0px") {
+            MenuItems.style.maxHeight = "200px";
+        } else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+</script>
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/bootbox/bootbox.all.min.js"></script>
+<script src="cartFunction.js"></script>
+<script src="logoutFunction.js"></script>
+<script>
+
+    let products;
+    let netPrice = 0;
+
+    $(document).ready(async function () {
+        $('#cover-spin').show(0);
+        setProducts();
+    });
+
+    const setProducts = () => {
+        getProducts().then((response) => {
+            console.log("Set products then")
+            products = response;
+            console.log("Res", products);
+
+            $("#cartTable").append("<tbody></tbody>");
+
+            for (let i = 0; i < products.length; i++) {
+
+                let product = products[i].products;
+                let image = "data:image/gif;base64," + product.image;
+                let totalPrice = parseInt(product.buyQty) * parseFloat(product.price);
+
+                netPrice += parseFloat(totalPrice);
+
+                let row = "<tr>\n" +
+                    "            <td>\n" +
+                    "                <div class=\"cart-info\">\n" +
+                    "                    <img src=\"" + image + "\">\n" +
+                    "                    <div>\n" +
+                    "                        <p>" + product.name + "</p>\n" +
+                    "                        <small>Price: LKR " + product.price + "</small>\n" +
+                    "                        <br>\n" +
+                    "                        <a class=\"cursorType\" id=\"cartItem" + i + "\">Remove</a>\n" +
+                    "                    </div>\n" +
+                    "                </div>\n" +
+                    "            </td>\n" +
+                    "            <td><input disabled type=\"text\" min=\"0\" value=\"" + product.buyQty + "\"></td>\n" +
+                    "            <td>LKR " + totalPrice + "</td>\n" +
+                    "        </tr>";
+
+                $('#cartTable tbody').append(row);
+
+                let clickFunction = "#cartItem" + i;
+
+                $(clickFunction).click(function () {
+                    bootbox.confirm({
+                        title: 'Remove From Cart',
+                        message: 'Do you want to remove this item ?',
+                        buttons: {
+                            confirm: {
+                                label: 'Yes',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'No',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function (result) {
+                            if (result) {
+                                $('#cover-spin').show(0);
+                                deleteProducts(products[i].id).then(() => {
+                                    console.log("Remove then")
+                                    $("#cartTable tbody").remove();
+                                    setProducts();
+                                });
+                            }
+                        },
+                        arg1: i,
+                    });
+                });
+            }
+
+            $('#totalPrice').html("LKR " + netPrice.toFixed(2));
+            $('#netPrice').html("LKR " + netPrice.toFixed(2));
+
+            $('#cover-spin').hide();
+        })
+    };
+
+    $("#btnCheckout").click(function () {
+        bootbox.confirm({
+            title: 'Checkout',
+            message: 'Do you want to checkout ?',
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (isYes) {
+                if (isYes) {
+                    $('#cover-spin').show(0);
+                    getProducts().then((response) => {
+                        if (response.length) {
+                            products = response;
+                            const customerId = sessionStorage.getItem("customerId");
+                            const userToken = sessionStorage.getItem("token");
+                            let orderDetails = products.map(outerProduct => {
+                                return {
+                                    "orderDetailId": null,
+                                    "quantity": parseInt(outerProduct.products.buyQty),
+                                    "storeId": parseInt(outerProduct.products.storeId),
+                                    "productId": parseInt(outerProduct.products.productId),
+                                    "orderId": null
+                                };
+                            });
+                            console.log("OrderDetails",orderDetails)
+                            $.ajax({
+                                method: "POST",
+                                url: "http://localhost:8080/api/v1/order/save",
+                                headers: {
+                                    'Authorization': userToken,
+                                },
+                                contentType: 'application/json',
+                                async: true,
+                                processData: false,
+                                data: JSON.stringify({
+                                    orderDto: {
+                                        "orderId": null,
+                                        "orderDate": null,
+                                        "customerId" : parseInt(customerId),
+                                        "orderDetailDtoList": orderDetails
+                                    },
+                                    paymentDto: {
+                                        "paymentId": null,
+                                        "paymentDate": null,
+                                        "amount": netPrice.toFixed(2),
+                                        "paymentType": "Cash On Delivery",
+                                        "customerId": parseInt(customerId),
+                                        "orderId": null
+                                    }
+                                }),
+                                success: function (data) {
+                                    console.log("Checkout success");
+                                    if (data.code === '200') {
+                                        products.forEach(outerProduct => {
+                                            deleteProducts(outerProduct.id).then(() => {
+                                                console.log("Deleted Successful");
+                                                $("#cartTable").find('tbody').remove();
+                                                setProducts();
+                                                $('#cover-spin').hide();
+                                                bootbox.dialog({
+                                                    message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#0f5132" class="bi bi-check-circle-fill" viewBox="0 0 16 16">\n' +
+                                                        '    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>\n' +
+                                                        '  </svg>    Checkout Successfull</p>',
+                                                    closeButton: false,
+                                                    backdrop: true
+                                                });
+                                            });
+                                        });
+                                    } else if (data.code === '500') {
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   System Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else {
+                                        $('#cover-spin').hide();
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Internal Server Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    }
+                                },
+                                error: function (data) {
+                                    $('#cover-spin').hide();
+                                    if (data.status === 500) {
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Unauthorized or Bad Request!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    } else {
+                                        bootbox.dialog({
+                                            message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                                                '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                                                '  </svg>   Internal Server Error!</p>',
+                                            closeButton: false,
+                                            backdrop: true
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    })
+                }
+            }
+        });
+    })
+
+</script>
+</body>
+</html>

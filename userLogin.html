@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="theme-color" content="#ffffff">
+    <meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=2 minimum-scale=1">
+    <link rel="stylesheet" href="assets/style/normalize.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/style/loginStyle.css">
+</head>
+<body>
+<div id="cover-spin"></div>
+<section class="container position-relative pt-5">
+    <div class="col-md-4 userLoginCard" style="float: none; margin: 0 auto;">
+        <div class="row mt-5">
+            <div class="logo w-auto" style="float: none; margin: 0 auto;">
+                <img src="assets/Images/BloomBiz.png" width="150px">
+            </div>
+        </div>
+        <div class="row pt-3">
+            <form class="w-75" style="float: none; margin: 0 auto;">
+                <div class="row mb-4">
+                    <label for="userLoginUsername" class="row-sm-2 col-form-label">Username</label>
+                    <div class="row-sm-10">
+                        <input type="text" class="form-control rounded-pill" id="userLoginUsername">
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <label for="userLoginPassword" class="row-sm-2 col-form-label">Password</label>
+                    <div class="row-sm-10">
+                        <input type="password" class="form-control rounded-pill" id="userLoginPassword">
+                    </div>
+                </div>
+                <div class="w-75 mt-5" style="float: none; margin: 0 auto;">
+                    <button type="button" class="btn btn-primary w-100 rounded-pill" id="btnSignIn">Sign in</button>
+                </div>
+            </form>
+        </div>
+        <div class="row mt-5 pb-5">
+            <p class="w-auto" style="float: none; margin: 0 auto;">New to Bloom Biz? <a href="./UserRegistration.html">Register</a></p>
+        </div>
+    </div>
+</section>
+
+
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="assets/bootbox/bootbox.all.min.js"></script>
+<script src="cartFunction.js"></script>
+<script>
+
+    $("#btnSignIn").click(function () {
+        doLogin();
+    });
+
+    $(document).on('keypress',function(e) {
+        if (e.key === 'Enter') {
+            doLogin();
+        }
+    });
+
+    function doLogin() {
+        $('#cover-spin').show(0);
+        let username = $("#userLoginUsername").val().trim();
+        let password = $("#userLoginPassword").val().trim();
+
+        $.ajax({
+            method: "POST",
+            url: "http://localhost:8080/api/v1/login/customer?username="+username+"&password="+password,
+            async: true,
+            success: function (data) {
+                console.log("Login", data);
+                if (data.code === '200') {
+                    sessionStorage.setItem("token", data.token);
+                    sessionStorage.setItem("username", username);
+                    sessionStorage.setItem("customerId", data.data.customerDto.customerId)
+                    clearObjectStore().then(() => {
+                        console.log("Clear Successful");
+                        window.location.replace("./index.html");
+                    });
+                } else if (data.code === '400') {
+                    $('#cover-spin').hide();
+                    bootbox.dialog({
+                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                            '  </svg>   Invalid Password!</p>',
+                        closeButton: false,
+                        backdrop: true
+                    });
+                } else {
+                    $('#cover-spin').hide();
+                    bootbox.dialog({
+                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                            '  </svg>   Internal Server Error!</p>',
+                        closeButton: false,
+                        backdrop: true
+                    });
+                }
+            },
+            error: function (data) {
+                $('#cover-spin').hide();
+                if (data.status === 500) {
+                    bootbox.dialog({
+                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                            '  </svg>   Unauthorized or Bad Request!</p>',
+                        closeButton: false,
+                        backdrop: true
+                    });
+                } else {
+                    bootbox.dialog({
+                        message: '<p class="text-center mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#D21312" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">\n' +
+                            '    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>\n' +
+                            '  </svg>   Internal Server Error!</p>',
+                        closeButton: false,
+                        backdrop: true
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

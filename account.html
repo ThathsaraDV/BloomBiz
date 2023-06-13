@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account - BloomBiz</title>
+    <link rel="stylesheet" href="assets/style/style.css">
+    <link rel="stylesheet" href="assets/style/accountStyle.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<div id="cover-spin"></div>
+<div class="container">
+    <div class="navbar">
+        <div class="logo">
+            <img src="assets/images/BloomBiz.png" width="120px">
+        </div>
+        <nav>
+            <ul id="MenuItems">
+                <li class="cursorType"><a class="menuItem-li" href="index.html">Home</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="product.html">Products</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="">About</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="">Contact</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="account.html">Account</a></li>
+                <li class="cursorType"><a class="menuItem-li" href="cart.html"><i class="fa fa-shopping-cart cart-icon"></i></a></li>
+                <li class="cursorType"><a id="logoutBtn"><i class="fa fa-sign-out logout-btn-icon"></i></a></li>
+            </ul>
+        </nav>
+        <img src="assets/Images/menu.PNG" class="menu-icon"
+             onclick="menutoggle()">
+    </div>
+</div>
+
+
+<div class="small-container2">
+    <div class="rowAccount">
+        <div class="main">
+            <h2 class="rowHeaderH2">Account</h2>
+            <div class="card">
+                <div class="card-body">
+                    <i class="fa fa-pen fa-xs edit"></i>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td style="font-weight: bold">First Name</td>
+                            <td style="font-weight: bold">:</td>
+                            <td id="tdFirstName">N/A</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Last Name</td>
+                            <td style="font-weight: bold">:</td>
+                            <td id="tdLastName">N/A</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Address</td>
+                            <td style="font-weight: bold">:</td>
+                            <td id="tdAddress">N/A</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Username</td>
+                            <td style="font-weight: bold">:</td>
+                            <td id="tdUsername">N/A</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Mobile No</td>
+                            <td style="font-weight: bold">:</td>
+                            <td id="tdMobileNo">N/A</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">Email</td>
+                            <td style="font-weight: bold">:</td>
+                            <td id="tdEmail">N/A</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="accountImage">
+            <img src="assets/Images/tree-isolated-on-white-background.jpg">
+        </div>
+    </div>
+</div>
+
+<!----------------- footer ---------------->
+
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3>Download Our App</h3>
+                <p>Download App for both Android and iOS
+                    mobile phones</p>
+                <div class="app-logo">
+                    <img src="assets/images/playstore.png">
+                    <img src="assets/images/appstore.png">
+                </div>
+            </div>
+            <div class="footer-col-2">
+                <img src="assets/Images/BloomBiz.png">
+                <p>Our purpose is to increase the plant growth and
+                    change the people into nature lovers.
+                </p>
+            </div>
+            <div class="footer-col-3">
+                <h3>Useful Links</h3>
+                <ul>
+                    <li>Coupons</li>
+                    <li>Blog Post</li>
+                    <li>Return Policy</li>
+                    <li>Join Affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3>Follow us</h3>
+                <ul>
+                    <li>Facebook</li>
+                    <li>Instagram</li>
+                    <li>Twitter</li>
+                    <li>Youtube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">Copyright 2022 - Easy Tutorials</p>
+    </div>
+</div>
+<!---------------- js for toggle menu ----------------->
+<script src="assets/jquery-3.6.0.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
+<script src="logoutFunction.js"></script>
+<script>
+    var MenuItems = document.getElementById("MenuItems");
+    MenuItems.style.maxHeight = "0px";
+
+    function menutoggle() {
+        if (MenuItems.style.maxHeight = "0px") {
+            MenuItems.style.maxHeight = "200px";
+        }
+        else {
+            MenuItems.style.maxHeight = "0px";
+        }
+    }
+</script>
+
+<script>
+
+    $(document).ready(function () {
+        $('#cover-spin').show(0);
+        const token = sessionStorage.getItem("token");
+        const username = sessionStorage.getItem("username");
+
+        $.ajax({
+            method: "GET",
+            url: "http://localhost:8080/api/v1/customer/get-customer?username="+username,
+            contentType: 'application/json',
+            async: true,
+            processData: false,
+            headers: { 'Authorization': token },
+            success: function (data) {
+                console.log("Data", data);
+                let user = data.data;
+                $('#tdFirstName').html(user.firstName);
+                $('#tdLastName').html(user.lastName);
+                $('#tdAddress').html(user.address);
+                $('#tdUsername').html(user.userName);
+                $('#tdMobileNo').html(user.contactNo);
+                $('#tdEmail').html(user.emailAddress);
+            }
+        }).then(function(values) {
+            $('#cover-spin').hide();
+        });
+
+    });
+
+</script>
+
+</body>
+</html>
